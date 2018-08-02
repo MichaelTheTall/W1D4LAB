@@ -28,6 +28,9 @@ def total_money(people)
 end
 
 def loan(lender, lendee, amount)
+  if lender[:monies] < amount
+    return "Fail"
+  end
   lender[:monies] -= amount
   lendee[:monies] += amount
 end

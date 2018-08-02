@@ -66,15 +66,24 @@ class TestFriends < MiniTest::Test
   end
 
   # 1. For a given person, return their name
-  def test_getting_name
+  def test_getting_name_daphne
     result = get_name(@person5)
     assert_equal("Daphne", result)
+  end
+
+  def test_getting_name_shaggy
+    result = get_name(@person1)
+    assert_equal("Shaggy", result)
   end
 
   # 2. For a given person, return their favourite tv show
   # (e.g. the function favourite_tv_show(@person2) should return the string "Baywatch")
   def test_favourite_tv_show_of_person
     assert_equal("Baywatch", favourite_tv_show(@person2))
+  end
+
+  def test_favourite_tv_show_of_person_2
+    assert_equal("Pokemon", favourite_tv_show(@person3))
   end
 
   # 3. For a given person, check if they like a particular food
@@ -92,24 +101,37 @@ class TestFriends < MiniTest::Test
   # 4. For a given person, add a new name to their list of friends
   # (e.g. the function add_friend(@person2, "Scrappy-Doo") should add Scrappy-Doo to the friends.)
   # (hint: This function should not return anything. After the function call, check for the length of the friends array to test it!)
-  def test_add_friend_for_person2
-    array_size = @person2[:friends]
+  def test_add_friend_for_person
+    array_size = @person2[:friends].length
     add_friend(@person2, "Scrappy-Doo")
     array_size_end = @person2[:friends]
-    assert_equal(2, array_size_end.length)
+    assert_equal((array_size + 1), array_size_end.length)
+  end
+
+  def test_add_friend_name_check
+    name = "Scrappy-Doo"
+    add_friend(@person2, name)
+    assert_equal(true, @person2[:friends].include?(name))
   end
 
   # 5. For a given person, remove a specific name from their list of friends
   # (hint: Same as above, testing for the length of the array should be sufficient)
-  def test_remove_friend_for_person1
-    array_size = @person1[:friends]
+  def test_remove_friend_for_person
+    array_size = @person1[:friends].length
     remove_friend(@person1, "Fred")
     array_size_end = @person1[:friends]
-    assert_equal(3, array_size_end.length)
+    assert_equal(array_size - 1, array_size_end.length)
+  end
+
+  def test_remove_friend_name_check
+    name = "Fred"
+    remove_friend(@person1, name)
+    assert_equal(false, @person1[:friends].include?(name))
   end
 
   # 6. Find the total of everyone's money
   # (hint: use the @people array, remember how we checked the total number of eggs yesterday?)
+
   def test_total_all_the_money
     result = total_money(@people)
     assert_equal(143, result)
@@ -125,6 +147,10 @@ class TestFriends < MiniTest::Test
     lendee_balance = @person1[:monies]
     assert_equal(95, lender_balance)
     assert_equal(6, lendee_balance)
+  end
+
+  def test_loan_fail
+    assert_equal("Fail", loan(@person1, @person3, 1000))
   end
 
   # 8. Find the set of everyone's favourite food joined together
